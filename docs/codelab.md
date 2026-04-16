@@ -1,10 +1,3 @@
-author: OpenAI Codex
-summary: Build a minimal child-like AI agent in Python that updates its identity directly from interaction instead of learning through reinforcement learning.
-id: child-like-ai-agent-python
-categories: ai,python,education,workshop
-environments: Web
-status: Draft
-feedback link: https://github.com/googlecodelabs/tools
 
 # Build a Child-Like AI Agent in Python
 
