@@ -1,49 +1,49 @@
-# Child-Like Agent Research Design
+# Conception de Recherche de l'Agent de Type Enfant
 
-This folder organizes the project into a cleaner research and workshop structure.
+Ce dossier organise le projet dans une structure plus claire pour la recherche et les ateliers.
 
-It is designed for three use cases:
+Il est pense pour trois cas d'usage:
 
-- explaining the concept in a live workshop
-- running the prototype locally
-- presenting the idea as a small research-style exploration
+- expliquer le concept pendant un atelier en direct
+- executer le prototype en local
+- presenter l'idee comme une petite exploration de type recherche
 
-## Folder Structure
+## Structure du Dossier
 
 - `notebooks/`
-  Interactive notebooks for workshop delivery and explanatory demos.
+  Notebooks interactifs pour l'animation d'atelier et les demonstrations explicatives.
 - `scripts/`
-  Plain Python implementation of the prototype.
+  Implementation Python du prototype.
 - `docs/`
-  Written explanation, codelab text, and file guide.
+  Explications ecrites, texte du codelab et guide des fichiers.
 - `assets/images/`
-  Visual figures that support explanation and presentation.
+  Figures visuelles qui soutiennent l'explication et la presentation.
 
-## Recommended Starting Points
+## Points de Depart Recommandes
 
-- Open [notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb) for a workshop-style notebook with explanation.
-- Open [notebooks/child_like_agent_codelab.ipynb](./notebooks/child_like_agent_codelab.ipynb) for a codelab-style notebook that mixes teaching notes and runnable code.
-- Run [scripts/child_like_agent.py](./scripts/child_like_agent.py) if you want the simplest terminal demo.
+- Ouvrez [notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb) pour un notebook de style atelier avec explications.
+- Ouvrez [notebooks/child_like_agent_codelab.ipynb](./notebooks/child_like_agent_codelab.ipynb) pour un notebook de style codelab qui melange notes pedagogiques et code executable.
+- Lancez [scripts/child_like_agent.py](./scripts/child_like_agent.py) si vous voulez la demo terminal la plus simple.
 
-## Research Framing
+## Cadre de Recherche
 
-This prototype explores an identity-based learning loop:
+Ce prototype explore une boucle d'apprentissage basee sur l'identite:
 
 `perceive -> decide -> feedback -> evaluate usefulness -> update identity`
 
-The system is intentionally different from reinforcement learning:
+Le systeme est volontairement different de l'apprentissage par renforcement:
 
-- no reward function
-- no policy optimization
-- no value function
-- no separate long-term memory store
+- pas de fonction de recompense
+- pas d'optimisation de politique
+- pas de fonction de valeur
+- pas de memoire long terme separee
 
-Instead, the agent learns by directly changing its own internal identity state.
+A la place, l'agent apprend en modifiant directement son propre etat d'identite interne.
 
-## Best File For a Demo
+## Meilleur Fichier Pour une Demo
 
-If you need one file for a live session, use:
+Si vous avez besoin d'un seul fichier pour une session en direct, utilisez:
 
 - [notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb)
 
-It satisfies the requirement of having at least one explanatory `.ipynb` dedicated to the child-like agent workshop.
+Il repond a l'exigence d'avoir au moins un fichier `.ipynb` explicatif dedie a l'atelier de l'agent de type enfant.
