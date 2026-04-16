@@ -1,79 +1,79 @@
-# File Guide
+# Guide des Fichiers
 
-This guide distinguishes the role of each file in the `research_design` folder.
+Ce guide distingue le role de chaque fichier dans le dossier `research_design`.
 
 ## Notebooks
 
 ### `notebooks/child_like_agent_workshop.ipynb`
 
-Primary workshop notebook.
+Notebook principal pour l'atelier.
 
-Use this when you want:
+Utilisez-le si vous voulez:
 
-- a live teaching flow
-- explanation mixed with code and outputs
-- a more presentation-oriented notebook experience
+- un deroulement pedagogique en direct
+- une explication melangeant code et sorties
+- une experience notebook plus orientee presentation
 
 ### `notebooks/child_like_agent_codelab.ipynb`
 
-Codelab-style explanatory notebook.
+Notebook explicatif de style codelab.
 
-Use this when you want:
+Utilisez-le si vous voulez:
 
-- a step-by-step educational walkthrough
-- markdown explanations alongside runnable code cells
-- a notebook that mirrors the logic of the standalone Python script
+- un parcours educatif etape par etape
+- des explications markdown avec des cellules de code executables
+- un notebook qui reprend la logique du script Python autonome
 
 ## Script
 
 ### `scripts/child_like_agent.py`
 
-Standalone Python implementation.
+Implementation Python autonome.
 
-Use this when you want:
+Utilisez-le si vous voulez:
 
-- a minimal local run from the terminal
-- one clean source file for the prototype logic
-- an easy starting point for modifications
+- une execution locale minimale dans le terminal
+- un seul fichier source clair pour la logique du prototype
+- un point de depart facile pour des modifications
 
 ## Documentation
 
 ### `docs/codelab.md`
 
-Markdown codelab document.
+Document codelab en Markdown.
 
-Use this when you want:
+Utilisez-le si vous voulez:
 
-- a written tutorial format
-- a document that can be adapted for workshop notes or publishing
-- a non-notebook explanation of the prototype
+- un format de tutoriel ecrit
+- un document adaptable pour des notes d'atelier ou une publication
+- une explication du prototype hors notebook
 
 ### `docs/file_guide.md`
 
-This file.
+Ce fichier.
 
-Use this when you want:
+Utilisez-le si vous voulez:
 
-- a quick orientation to the folder
-- a way to distinguish which artifact to open first
+- une orientation rapide dans le dossier
+- une facon de distinguer quel artefact ouvrir en premier
 
-## Visual Assets
+## Ressources Visuelles
 
 ### `assets/images/belief_update.png`
 
-Supports explanation of how beliefs evolve.
+Soutient l'explication de l'evolution des croyances.
 
 ### `assets/images/confidence_evolution.png`
 
-Supports explanation of how confidence changes over time.
+Soutient l'explication de l'evolution de la confiance au fil du temps.
 
 ### `assets/images/feature_space.png`
 
-Supports explanation of the representational view of the toy system.
+Soutient l'explication de la vue representationnelle du systeme jouet.
 
-## Suggested Workflow
+## Workflow Suggere
 
-1. Start with `README.md`.
-2. Open `notebooks/child_like_agent_workshop.ipynb` for the live explanation.
-3. Use `scripts/child_like_agent.py` for the simplest runnable version.
-4. Refer to `docs/codelab.md` for written teaching notes.
+1. Commencez par `README.md`.
+2. Ouvrez `notebooks/child_like_agent_workshop.ipynb` pour l'explication en direct.
+3. Utilisez `scripts/child_like_agent.py` pour la version executable la plus simple.
+4. Consultez `docs/codelab.md` pour les notes pedagogiques ecrites.

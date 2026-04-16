@@ -1,13 +1,14 @@
 """
-Core idea:
-This agent learns by updating its own identity from interaction.
-It does not use pretraining, reward-based reinforcement learning,
-policy optimization, or a separate long-term memory system.
+Idee centrale:
+Cet agent apprend en mettant a jour sa propre identite a partir des interactions.
+Il n'utilise pas de pre-entrainement, d'apprentissage par renforcement base
+sur une recompense, d'optimisation de politique, ni de systeme de memoire
+long terme separe.
 
-Learning loop:
+Boucle d'apprentissage:
     perceive -> decide -> receive feedback -> evaluate usefulness -> update identity
 
-Run:
+Execution:
     python3 child_like_agent.py
 """
 
@@ -25,7 +26,7 @@ DIVIDER = "-" * 78
 
 @dataclass
 class Decision:
-    """A simple prediction returned by the agent."""
+    """Une prediction simple retournee par l'agent."""
 
     prediction: str
     confidence: float
@@ -34,11 +35,11 @@ class Decision:
 
 class ChildLikeAgent:
     """
-    A tiny identity-based learning agent.
+    Un petit agent d'apprentissage base sur l'identite.
 
-    The identity store is the central state of the system.
-    Instead of writing to a separate memory database, the agent updates its
-    internal beliefs directly as part of "who it is."
+    Le magasin d'identite est l'etat central du systeme.
+    Au lieu d'ecrire dans une base memoire separee, l'agent met a jour ses
+    croyances internes directement comme une partie de "ce qu'il est".
     """
 
     def __init__(self) -> None:
@@ -51,14 +52,14 @@ class ChildLikeAgent:
             "ignored_feedback_count": 0,
             "confidence_threshold": 0.60,
             "last_decision": None,
-            "last_update_reason": "Agent created.",
+            "last_update_reason": "Agent cree.",
         }
 
     def perceive(self, text: str) -> Dict[str, Any]:
         """
-        Turn raw input into a tiny internal representation.
+        Transformer une entree brute en petite representation interne.
 
-        This keeps the prototype lightweight and easy to explain live.
+        Cela garde le prototype leger et facile a expliquer en direct.
         """
         normalized = text.strip().lower()
         tokens = [token.strip(".,!?") for token in normalized.split() if token.strip(".,!?")]
@@ -72,26 +73,26 @@ class ChildLikeAgent:
 
     def decide(self, perception: Dict[str, Any]) -> Decision:
         """
-        Predict the best matching category from current identity.
+        Predire la categorie la plus proche depuis l'identite actuelle.
 
-        Confidence is based on token overlap with previously learned examples
-        plus a small boost from how often that category has been reinforced.
+        La confiance depend du recouvrement des tokens avec les exemples
+        deja appris, avec un petit bonus selon le renforcement de la categorie.
         """
         beliefs = self.identity["beliefs"]
         input_tokens = set(perception["tokens"])
 
         if not beliefs:
             decision = Decision(
-                prediction="I don't know yet.",
+                prediction="Je ne sais pas encore.",
                 confidence=0.0,
-                reason="The agent has no learned beliefs yet.",
+                reason="L'agent n'a encore aucune croyance apprise.",
             )
             self.identity["last_decision"] = decision.prediction
             return decision
 
         best_category: Optional[str] = None
         best_score = 0.0
-        best_reason = "No useful overlap with known examples."
+        best_reason = "Aucun recouvrement utile avec les exemples connus."
 
         for category, belief in beliefs.items():
             example_tokens = set()
@@ -107,14 +108,14 @@ class ChildLikeAgent:
                 best_category = category
                 best_score = score
                 best_reason = (
-                    f"Matched {overlap} token(s) with '{category}' examples; "
-                    f"belief strength={belief['strength']}."
+                    f"{overlap} token(s) commun(s) avec les exemples de '{category}'; "
+                    f"force de croyance={belief['strength']}."
                 )
 
         threshold = self.identity["confidence_threshold"]
         if best_category is None or best_score < threshold:
             decision = Decision(
-                prediction="I don't know.",
+                prediction="Je ne sais pas.",
                 confidence=round(best_score, 2),
                 reason=best_reason,
             )
@@ -136,11 +137,11 @@ class ChildLikeAgent:
         feedback_label: str,
     ) -> Dict[str, Any]:
         """
-        Decide whether the feedback should change the identity.
+        Decider si le retour doit modifier l'identite.
 
-        This is intentionally not reward-based RL.
-        The agent is not maximizing a scalar reward.
-        It is judging whether the incoming feedback is novel or corrective.
+        Ce n'est volontairement pas du RL base sur la recompense.
+        L'agent ne maximise pas une recompense scalaire.
+        Il juge si le retour entrant est nouveau ou correctif.
         """
         beliefs = self.identity["beliefs"]
         normalized_text = perception["normalized_text"]
@@ -151,23 +152,23 @@ class ChildLikeAgent:
         was_uncertain = decision.confidence < self.identity["confidence_threshold"]
         was_wrong = decision.prediction not in {
             feedback_label,
-            "I don't know.",
-            "I don't know yet.",
+            "Je ne sais pas.",
+            "Je ne sais pas encore.",
         }
 
         useful = is_new_category or is_new_example or was_uncertain or was_wrong
 
         reasons: List[str] = []
         if is_new_category:
-            reasons.append("new category")
+            reasons.append("nouvelle categorie")
         if is_new_example:
-            reasons.append("new example")
+            reasons.append("nouvel exemple")
         if was_uncertain:
-            reasons.append("agent was uncertain")
+            reasons.append("agent incertain")
         if was_wrong:
-            reasons.append("agent was wrong")
+            reasons.append("agent en erreur")
         if not reasons:
-            reasons.append("redundant feedback")
+            reasons.append("retour redondant")
 
         return {"useful": useful, "reason": ", ".join(reasons)}
 
@@ -178,13 +179,13 @@ class ChildLikeAgent:
         usefulness: Dict[str, Any],
     ) -> bool:
         """
-        Update identity directly when the feedback is judged useful.
+        Mettre a jour l'identite directement quand le retour est juge utile.
         """
         self.identity["interaction_count"] += 1
 
         if not usefulness["useful"]:
             self.identity["ignored_feedback_count"] += 1
-            self.identity["last_update_reason"] = f"No learning: {usefulness['reason']}."
+            self.identity["last_update_reason"] = f"Pas d'apprentissage: {usefulness['reason']}."
             return False
 
         beliefs = self.identity["beliefs"]
@@ -199,13 +200,13 @@ class ChildLikeAgent:
         beliefs[feedback_label]["strength"] += 1
         self.identity["learning_count"] += 1
         self.identity["last_update_reason"] = (
-            f"Learned '{feedback_label}' because {usefulness['reason']}."
+            f"Appris '{feedback_label}' car {usefulness['reason']}."
         )
         return True
 
 
 def get_demo_interactions() -> List[Dict[str, str]]:
-    """Small workshop dataset that shows uncertainty, learning, and redundancy."""
+    """Petit jeu de donnees atelier: incertitude, apprentissage et redondance."""
     return [
         {"input": "apple is a fruit", "feedback": "fruit"},
         {"input": "banana is a fruit", "feedback": "fruit"},
@@ -224,29 +225,29 @@ def get_demo_interactions() -> List[Dict[str, str]]:
 
 
 def print_banner() -> None:
-    """Intro text used in the live demo."""
+    """Texte d'introduction utilise dans la demo en direct."""
     print(LINE)
-    print("CHILD-LIKE AI AGENT: GOOGLE CODELAB DEMO")
+    print("AGENT IA DE TYPE ENFANT: DEMO GOOGLE CODELAB")
     print(LINE)
-    print("This prototype learns by updating identity from interaction.")
-    print("It is not reinforcement learning: no reward, no policy, no value function.")
+    print("Ce prototype apprend en mettant a jour son identite depuis l'interaction.")
+    print("Ce n'est pas du RL: pas de recompense, pas de politique, pas de fonction de valeur.")
     print()
 
 
 def print_identity_diff(before: Dict[str, Any], after: Dict[str, Any]) -> None:
-    """Print only the parts of identity that changed after an interaction."""
-    print("\nIDENTITY CHANGES")
+    """Afficher uniquement les parties de l'identite qui ont change."""
+    print("\nCHANGEMENTS D'IDENTITE")
     changed = False
 
     for key in after:
         if before.get(key) != after.get(key):
             changed = True
             print(f"- {key}:")
-            print(f"  before: {pformat(before.get(key))}")
-            print(f"  after : {pformat(after.get(key))}")
+            print(f"  avant: {pformat(before.get(key))}")
+            print(f"  apres: {pformat(after.get(key))}")
 
     if not changed:
-        print("- No identity changes")
+        print("- Aucun changement d'identite")
 
 
 def print_interaction_summary(
@@ -258,34 +259,34 @@ def print_interaction_summary(
     learned: bool,
     identity: Dict[str, Any],
 ) -> None:
-    """Display one clear workshop-friendly interaction trace."""
+    """Afficher une trace d'interaction claire et adaptee a l'atelier."""
     print(DIVIDER)
     print(f"INTERACTION {index}")
-    print(f"Perception: {perception['raw_text']}")
-    print(f"Tokens    : {perception['tokens']}")
-    print(f"Decision  : {decision.prediction}")
-    print(f"Confidence: {decision.confidence:.2f}")
-    print(f"Reason    : {decision.reason}")
-    print(f"Feedback  : {feedback}")
-    print(f"Useful?   : {usefulness['useful']}")
-    print(f"Why learn : {usefulness['reason']}")
-    print(f"Learned?  : {learned}")
-    print(f"Update    : {identity['last_update_reason']}")
+    print(f"Perception : {perception['raw_text']}")
+    print(f"Tokens     : {perception['tokens']}")
+    print(f"Decision   : {decision.prediction}")
+    print(f"Confiance  : {decision.confidence:.2f}")
+    print(f"Raison     : {decision.reason}")
+    print(f"Retour     : {feedback}")
+    print(f"Utile ?    : {usefulness['useful']}")
+    print(f"Pourquoi   : {usefulness['reason']}")
+    print(f"Appris ?   : {learned}")
+    print(f"Mise a jour: {identity['last_update_reason']}")
 
 
 def print_final_summary(agent: ChildLikeAgent) -> None:
-    """Display final state in a compact summary."""
+    """Afficher l'etat final dans un resume compact."""
     print(LINE)
-    print("FINAL SUMMARY")
+    print("RESUME FINAL")
     print(LINE)
-    print(f"Interactions seen : {agent.identity['interaction_count']}")
-    print(f"Learning updates  : {agent.identity['learning_count']}")
-    print(f"Ignored feedback  : {agent.identity['ignored_feedback_count']}")
-    print("Known categories  :", ", ".join(agent.identity["beliefs"].keys()))
+    print(f"Interactions vues  : {agent.identity['interaction_count']}")
+    print(f"Mises a jour appr. : {agent.identity['learning_count']}")
+    print(f"Retours ignores    : {agent.identity['ignored_feedback_count']}")
+    print("Categories connues :", ", ".join(agent.identity["beliefs"].keys()))
 
 
 def run_demo() -> None:
-    """Run the full simulation loop."""
+    """Executer la boucle complete de simulation."""
     agent = ChildLikeAgent()
     print_banner()
 
@@ -307,7 +308,7 @@ def run_demo() -> None:
             identity=agent.identity,
         )
         print_identity_diff(before_identity, agent.identity)
-        print("\nCURRENT IDENTITY SNAPSHOT")
+        print("\nINSTANTANE ACTUEL DE L'IDENTITE")
         print(pformat(agent.identity, sort_dicts=False))
         print()
 

@@ -1,8 +1,6 @@
 # Conception de Recherche de l'Agent de Type Enfant
 
-Ce dossier organise le projet dans une structure plus claire pour la recherche et les ateliers.
-
-Il est pense pour trois cas d'usage:
+Cette structure est pense pour trois cas d'usage:
 
 - expliquer le concept pendant un atelier en direct
 - executer le prototype en local
@@ -42,8 +40,4 @@ A la place, l'agent apprend en modifiant directement son propre etat d'identite 
 
 ## Meilleur Fichier Pour une Demo
 
-Si vous avez besoin d'un seul fichier pour une session en direct, utilisez:
-
-- [notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb)
-
-Il repond a l'exigence d'avoir au moins un fichier `.ipynb` explicatif dedie a l'atelier de l'agent de type enfant.
+[notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb)
