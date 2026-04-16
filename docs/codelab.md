@@ -1,129 +1,129 @@
 
-# Build a Child-Like AI Agent in Python
+# Construire un Agent IA de Type Enfant en Python
 
-## Overview
+## Vue d'ensemble
 Duration: 2
 
-In this codelab, you'll build a minimal prototype of a "child-like AI agent" that learns continuously from interaction.
+Dans ce codelab, vous allez construire un prototype minimal d'"agent IA de type enfant" qui apprend en continu a partir des interactions.
 
-Unlike many AI systems, this prototype does not use:
+Contrairement a de nombreux systemes d'IA, ce prototype n'utilise pas:
 
-- large pretrained models
-- reward-based reinforcement learning
-- a separate long-term memory database
+- de grands modeles pre-entraines
+- l'apprentissage par renforcement base sur une recompense
+- une base de memoire long terme separee
 
-Instead, the agent evolves by updating its own internal identity state over time.
+A la place, l'agent evolue en mettant a jour son propre etat interne d'identite au fil du temps.
 
-What you'll learn:
+Ce que vous allez apprendre:
 
-- how to model identity as the core state of an agent
-- how to implement a simple `perceive -> decide -> feedback -> update` loop
-- how to let the agent say "I don't know" when confidence is low
-- how to decide whether new information is useful before learning it
-- how this approach differs from reinforcement learning
+- comment modeliser l'identite comme etat central de l'agent
+- comment implementer une boucle simple `perceive -> decide -> feedback -> update`
+- comment permettre a l'agent de dire "Je ne sais pas" quand la confiance est faible
+- comment decider si une nouvelle information est utile avant de l'apprendre
+- en quoi cette approche differe de l'apprentissage par renforcement
 
-What you'll build:
+Ce que vous allez construire:
 
-- one Python script: `child_like_agent.py`
-- one workshop-friendly simulation you can run locally
+- un script Python: `child_like_agent.py`
+- une simulation adaptee aux ateliers, executable en local
 
-## Why This Is Not Reinforcement Learning
+## Pourquoi ce n'est pas de l'Apprentissage par Renforcement
 Duration: 2
 
-This prototype is intentionally simple so the learning mechanism is easy to explain.
+Ce prototype est volontairement simple afin que le mecanisme d'apprentissage soit facile a expliquer.
 
-In reinforcement learning, an agent usually:
+En apprentissage par renforcement, un agent:
 
-- takes an action
-- receives a scalar reward
-- updates a policy or value estimate to maximize future reward
+- effectue une action
+- recoit une recompense scalaire
+- met a jour une politique ou une estimation de valeur pour maximiser la recompense future
 
-This codelab does something different.
+Ce codelab propose une approche differente.
 
-Here, the agent:
+Ici, l'agent:
 
-- perceives an input
-- makes a prediction with confidence
-- receives feedback
-- judges whether the feedback is useful
-- updates its identity directly
+- percoit une entree
+- fait une prediction avec un niveau de confiance
+- recoit un retour
+- juge si ce retour est utile
+- met a jour directement son identite
 
-There is no reward signal, no policy gradient, and no optimization loop.
+Il n'y a ni signal de recompense, ni gradient de politique, ni boucle d'optimisation.
 
 Positive
-: The learning logic is visible and easy to inspect.
+: La logique d'apprentissage est visible et facile a inspecter.
 
 Positive
-: The evolving identity makes the agent's state easy to explain live.
+: L'identite evolutive rend l'etat de l'agent facile a expliquer en direct.
 
-## Prerequisites
+## Prerequis
 Duration: 1
 
-You only need:
+Vous avez seulement besoin de:
 
-- Python 3.9 or newer
-- a terminal
-- a text editor
+- Python 3.9 ou plus recent
+- un terminal
+- un editeur de texte
 
-No external packages are required.
+Les dependances externes sont listees dans `requirements.txt`.
 
-## Project Files
+## Fichiers du Projet
 Duration: 1
 
-This codelab uses the following files:
+Ce codelab utilise les fichiers suivants:
 
-- `child_like_agent.py` - the runnable prototype
-- `codelab.md` - this Google Codelab-style guide
+- `child_like_agent.py` - le prototype executable
+- `codelab.md` - ce guide au format type Google Codelab
 
-The Python script is intentionally self-contained for easy demos and workshops.
+Le script Python est volontairement autonome pour faciliter les demos et les ateliers.
 
-## Run the Prototype
+## Executer le Prototype
 Duration: 2
 
-From the project folder, run:
+Depuis le dossier du projet, executez:
 
 ```bash
 python3 child_like_agent.py
 ```
 
-You should see:
+Vous devriez voir:
 
-- a step-by-step interaction log
-- predictions and confidence values
-- usefulness checks before learning
-- identity changes after each interaction
-- a final summary of what the agent learned
+- un journal des interactions pas a pas
+- des predictions et des scores de confiance
+- des verifications d'utilite avant l'apprentissage
+- des changements d'identite apres chaque interaction
+- un resume final de ce que l'agent a appris
 
-## Understand the Identity Store
+## Comprendre le Magasin d'Identite
 Duration: 3
 
-The identity store is the heart of the agent.
+Le magasin d'identite est le coeur de l'agent.
 
-It includes:
+Il inclut:
 
-- `beliefs`: learned categories and examples
-- `interaction_count`: total interactions seen
-- `learning_count`: how many times identity changed
-- `ignored_feedback_count`: how many times feedback was skipped
-- `confidence_threshold`: when to say "I don't know"
-- `last_update_reason`: a plain-language explanation of the last change
+- `beliefs`: categories et exemples appris
+- `interaction_count`: nombre total d'interactions observees
+- `learning_count`: nombre de fois ou l'identite a change
+- `ignored_feedback_count`: nombre de fois ou le retour a ete ignore
+- `confidence_threshold`: seuil pour dire "Je ne sais pas"
+- `last_update_reason`: explication en langage naturel de la derniere modification
 
-This is important because the agent does not save experiences in a separate memory module.
-Its learning is represented directly in the identity itself.
+Ce point est important car l'agent ne sauvegarde pas ses experiences dans un module memoire separe.
+Son apprentissage est represente directement dans son identite.
 
-## Step 1: Perceive Input
+## Etape 1: Percevoir l'Entree
 Duration: 3
 
-The `perceive()` function transforms raw text into a small internal representation.
+La fonction `perceive()` transforme le texte brut en une petite representation interne.
 
-In this prototype, perception extracts:
+Dans ce prototype, la perception extrait:
 
-- the raw text
-- a normalized lowercase string
-- a token list
-- token count
+- le texte brut
+- une chaine normalisee en minuscules
+- une liste de tokens
+- le nombre de tokens
 
-This keeps the logic simple while still making the learning loop concrete.
+Cela garde une logique simple tout en rendant la boucle d'apprentissage concrete.
 
 ```python
 def perceive(self, text: str) -> Dict[str, Any]:
@@ -137,119 +137,119 @@ def perceive(self, text: str) -> Dict[str, Any]:
     }
 ```
 
-## Step 2: Decide With Confidence
+## Etape 2: Decider Avec Confiance
 Duration: 4
 
-The `decide()` function compares input tokens against the examples already stored in identity.
+La fonction `decide()` compare les tokens d'entree avec les exemples deja stockes dans l'identite.
 
-It then:
+Ensuite, elle:
 
-- picks the best matching category
-- computes a rough confidence score
-- returns `"I don't know"` if confidence is below threshold
+- choisit la categorie la plus proche
+- calcule un score de confiance approximatif
+- renvoie `"Je ne sais pas"` si la confiance est sous le seuil
 
-This is the child-like behavior we want for the workshop:
-the agent should not pretend to know something it cannot justify.
+Ce comportement de type enfant est ce que nous voulons pour l'atelier:
+l'agent ne doit pas pretendre savoir ce qu'il ne peut pas justifier.
 
 Negative
-: If confidence is too low, the agent should avoid overclaiming.
+: Si la confiance est trop faible, l'agent doit eviter de sur-affirmer.
 
-## Step 3: Evaluate Usefulness Before Learning
+## Etape 3: Evaluer l'Utilite Avant d'Apprendre
 Duration: 4
 
-The `evaluate_usefulness()` function is one of the key ideas in this prototype.
+La fonction `evaluate_usefulness()` est l'une des idees cles de ce prototype.
 
-The agent does not blindly learn every piece of feedback.
-Instead, it asks whether the feedback is useful.
+L'agent n'apprend pas aveuglement chaque retour.
+A la place, il se demande si ce retour est utile.
 
-Feedback is considered useful when it:
+Un retour est considere utile lorsqu'il:
 
-- introduces a new category
-- adds a new example
-- corrects a wrong decision
-- helps when the agent was uncertain
+- introduit une nouvelle categorie
+- ajoute un nouvel exemple
+- corrige une decision incorrecte
+- aide lorsque l'agent etait incertain
 
-That means learning is selective, not automatic.
+Cela signifie que l'apprentissage est selectif, pas automatique.
 
-## Step 4: Update Identity
+## Etape 4: Mettre a Jour l'Identite
 Duration: 4
 
-The `learn()` function updates the agent's identity directly.
+La fonction `learn()` met a jour directement l'identite de l'agent.
 
-If feedback is useful, the script:
+Si le retour est utile, le script:
 
-- creates the category if needed
-- stores the new example
-- increases that category's strength
-- records why the update happened
+- cree la categorie si necessaire
+- stocke le nouvel exemple
+- augmente la force de cette categorie
+- enregistre la raison de la mise a jour
 
-If feedback is not useful, the agent does not change identity and logs that the feedback was redundant.
+Si le retour n'est pas utile, l'agent ne change pas d'identite et consigne que le retour etait redondant.
 
-This gives you a very visible notion of development over time.
+Cela donne une notion tres visible de l'evolution au fil du temps.
 
-## Step 5: Watch the Learning Loop
+## Etape 5: Observer la Boucle d'Apprentissage
 Duration: 3
 
-The simulation loop processes a small sequence of interactions.
+La boucle de simulation traite une petite sequence d'interactions.
 
-For each interaction, the script shows:
+Pour chaque interaction, le script montre:
 
 - perception
 - decision
-- confidence
-- feedback
-- usefulness judgment
-- learning decision
-- identity diff
+- confiance
+- retour
+- evaluation d'utilite
+- decision d'apprentissage
+- differences d'identite
 
-This makes it easy to narrate the live demo and point at each stage of the loop.
+Cela facilite la narration de la demo en direct et la mise en evidence de chaque etape de la boucle.
 
-## Workshop Checkpoint
+## Point de Controle Atelier
 Duration: 2
 
-At this point, verify that you can explain the following:
+A ce stade, verifiez que vous pouvez expliquer les points suivants:
 
-1. Why the agent says `"I don't know"` early on.
-2. Why repeated feedback may later be ignored as redundant.
-3. Why updating identity is different from storing a separate memory log.
-4. Why this prototype is not reinforcement learning.
+1. Pourquoi l'agent dit `"Je ne sais pas"` au debut.
+2. Pourquoi des retours repetes peuvent ensuite etre ignores comme redondants.
+3. Pourquoi la mise a jour de l'identite est differente d'un journal memoire separe.
+4. Pourquoi ce prototype n'est pas de l'apprentissage par renforcement.
 
-If you can explain those four points, the demo is ready for a workshop.
+Si vous pouvez expliquer ces quatre points, la demo est prete pour un atelier.
 
-## Suggested Live Demo Script
+## Script de Demo en Direct Suggere
 Duration: 3
 
-A simple way to present this codelab:
+Une facon simple de presenter ce codelab:
 
-1. Start by showing that the agent knows nothing.
-2. Run the first few examples and point out the low-confidence behavior.
-3. Show how the identity store changes after each interaction.
-4. Highlight a later case where the agent becomes more confident.
-5. End with a redundant example to show selective learning.
+1. Commencez en montrant que l'agent ne sait rien.
+2. Lancez les premiers exemples et soulignez le comportement de faible confiance.
+3. Montrez comment le magasin d'identite change apres chaque interaction.
+4. Mettez en avant un cas plus tardif ou l'agent devient plus confiant.
+5. Terminez avec un exemple redondant pour montrer l'apprentissage selectif.
 
-This progression makes the learning dynamics easy to follow.
+Cette progression rend la dynamique d'apprentissage facile a suivre.
 
-## Next Ideas
+## Idees Suivantes
 Duration: 2
 
-If you want to extend the prototype later, you could add:
+Si vous voulez etendre le prototype plus tard, vous pouvez ajouter:
 
-- an interactive input mode for live audience examples
-- simple forgetting or identity drift rules
-- conflict handling when feedback disagrees with older beliefs
-- multiple identity traits beyond category beliefs
+- un mode d'entree interactif pour des exemples proposes par le public
+- des regles simples d'oubli ou de derive d'identite
+- une gestion des conflits quand le retour contredit des croyances plus anciennes
+- plusieurs traits d'identite au-dela des croyances de categorie
 
-Keep the system small enough that participants can still understand every update.
+Gardez le systeme assez petit pour que les participants puissent toujours comprendre chaque mise a jour.
 
-## Summary
+## Resume
 Duration: 1
 
-You built a minimal child-like AI agent in Python that:
+Vous avez construit un agent IA de type enfant minimal en Python qui:
 
-- learns continuously from interaction
-- updates its own identity over time
-- decides whether feedback is useful before learning
-- uses uncertainty instead of bluffing
-- stays simple enough for a workshop demo
+- apprend en continu a partir des interactions
+- met a jour sa propre identite au fil du temps
+- decide si le retour est utile avant d'apprendre
+- utilise l'incertitude au lieu de bluffer
+- reste assez simple pour une demo d'atelier
 
-You now have a compact example of identity-based learning that is easy to run locally and easy to explain.
+Vous avez maintenant un exemple compact d'apprentissage base sur l'identite, facile a executer en local et facile a expliquer.
