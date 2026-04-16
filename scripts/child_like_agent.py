@@ -1,6 +1,4 @@
 """
-Google Codelab-friendly demo: a minimal child-like AI agent.
-
 Core idea:
 This agent learns by updating its own identity from interaction.
 It does not use pretraining, reward-based reinforcement learning,
