@@ -1,43 +1,87 @@
-# Conception de Recherche de l'Agent de Type Enfant
+# Child-Like Agent (GDSC Research Demo)
 
-Cette structure est pense pour trois cas d'usage:
+A compact educational project that demonstrates a **child-like learning loop** in Python.
+Instead of reinforcement learning, the agent updates its internal identity directly from interaction feedback.
 
-- expliquer le concept pendant un atelier en direct
-- executer le prototype en local
-- presenter l'idee comme une petite exploration de type recherche
+## Project Description
 
-## Structure du Dossier
+This repository is designed for:
 
-- `notebooks/`
-  Notebooks interactifs pour l'animation d'atelier et les demonstrations explicatives.
-- `scripts/`
-  Implementation Python du prototype.
-- `docs/`
-  Explications ecrites, texte du codelab et guide des fichiers.
-- `assets/images/`
-  Figures visuelles qui soutiennent l'explication et la presentation.
+- live workshops and demos
+- local experimentation with a simple executable prototype
+- explaining identity-driven learning in a clear, inspectable way
 
-## Points de Depart Recommandes
-
-- Ouvrez [notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb) pour un notebook de style atelier avec explications.
-- Ouvrez [notebooks/child_like_agent_codelab.ipynb](./notebooks/child_like_agent_codelab.ipynb) pour un notebook de style codelab qui melange notes pedagogiques et code executable.
-- Lancez [scripts/child_like_agent.py](./scripts/child_like_agent.py) si vous voulez la demo terminal la plus simple.
-
-## Cadre de Recherche
-
-Ce prototype explore une boucle d'apprentissage basee sur l'identite:
+Core loop:
 
 `perceive -> decide -> feedback -> evaluate usefulness -> update identity`
 
-Le systeme est volontairement different de l'apprentissage par renforcement:
+## Why This Project Is Different
 
-- pas de fonction de recompense
-- pas d'optimisation de politique
-- pas de fonction de valeur
-- pas de memoire long terme separee
+This prototype intentionally does **not** use:
 
-A la place, l'agent apprend en modifiant directement son propre etat d'identite interne.
+- reward-based reinforcement learning
+- policy optimization
+- value functions
+- separate long-term memory storage
 
-## Meilleur Fichier Pour une Demo
+The agent learns by modifying its own identity state (`beliefs`, confidence behavior, and update reasons).
 
-[notebooks/child_like_agent_workshop.ipynb](./notebooks/child_like_agent_workshop.ipynb)
+## Repository Structure
+
+- `scripts/`  
+  Executable Python prototype (`child_like_agent.py`).
+- `notebooks/`  
+  Workshop and codelab notebooks for interactive teaching.
+- `docs/`  
+  Written documentation (`codelab.md`, `file_guide.md`).
+- `assets/images/`  
+  Visual assets used in explanations.
+
+## Quick Start
+
+### 1) Prerequisites
+
+- Python 3.9+
+- pip
+
+### 2) Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3) Run the terminal demo
+
+```bash
+python scripts/child_like_agent.py
+```
+
+## Recommended Entry Points
+
+- Workshop notebook: [`notebooks/child_like_agent_workshop.ipynb`](./notebooks/child_like_agent_workshop.ipynb)
+- Codelab notebook: [`notebooks/child_like_agent_codelab.ipynb`](./notebooks/child_like_agent_codelab.ipynb)
+- Script demo: [`scripts/child_like_agent.py`](./scripts/child_like_agent.py)
+
+## Documentation
+
+- Codelab guide: [`docs/codelab.md`](./docs/codelab.md)
+- File orientation guide: [`docs/file_guide.md`](./docs/file_guide.md)
+
+## Contributing
+
+Contributions are welcome.
+Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) before opening an issue or pull request.
+
+## Code of Conduct
+
+This project follows a community code of conduct:
+[`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)
+
+## Security
+
+Please review [`SECURITY.md`](./SECURITY.md) for how to report vulnerabilities.
+
+## License
+
+This project is licensed under the MIT License.
+See [`LICENSE`](./LICENSE) for details.
